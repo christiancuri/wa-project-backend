@@ -43,7 +43,6 @@
     "mongoose": "5.13.6",
     "mongoose-lean-getters": "^0.1.2",
     "morgan": "^1.10.0",
-    "node-forge": "^0.10.0",
     "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0",
     "rimraf": "^3.0.2",

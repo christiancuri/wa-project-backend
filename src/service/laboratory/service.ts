@@ -1,10 +1,31 @@
-import { Doc, ILaboratory, Laboratory, Populate, Status } from "@models";
+import {
+  Doc,
+  ILaboratory,
+  Laboratory,
+  LaboratoryId,
+  Populate,
+  Status,
+} from "@models";
 
 import { HTTP400Error } from "@utils";
 
 function sanitizeObject<T>(obj: T, fields = ""): Omit<T, typeof fields> {
   for (const field of fields.split(" ")) delete obj[field];
   return obj;
+}
+
+async function getNextId(): Promise<number> {
+  const { id } = await LaboratoryId.findOneAndUpdate(
+    {},
+    {
+      $inc: {
+        id: 1,
+      },
+    },
+    { upsert: true, new: true },
+  ).lean();
+
+  return id;
 }
 
 export async function getLaboratories(): Promise<
@@ -18,11 +39,13 @@ export async function getLaboratories(): Promise<
 }
 
 export async function createLaboratory(
-  info: Omit<Doc<ILaboratory>, "_id" | "status">,
+  info: Omit<Doc<ILaboratory>, "_id" | "id" | "status">,
 ): Promise<Doc<ILaboratory>> {
   const laboratoryInfo = sanitizeObject<
-    Omit<Doc<ILaboratory>, "_id" | "status">
-  >(info, "_id status");
+    Omit<Doc<ILaboratory>, "_id" | "status" | "id">
+  >(info, "_id status id");
+
+  const id = await getNextId();
 
   const laboratory = await Laboratory.findOneAndUpdate(
     {
@@ -31,6 +54,7 @@ export async function createLaboratory(
     {
       ...laboratoryInfo,
       status: Status.ACTIVE,
+      id,
     },
     {
       new: true,
@@ -41,7 +65,10 @@ export async function createLaboratory(
   return laboratory;
 }
 
-type UpdateLabProp = Omit<Doc<ILaboratory>, "_id" | "createdAt" | "updatedAt">;
+type UpdateLabProp = Omit<
+  Doc<ILaboratory>,
+  "_id" | "id" | "createdAt" | "updatedAt"
+>;
 
 export async function updateLaboratory(
   _id: string,

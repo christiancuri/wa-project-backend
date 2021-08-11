@@ -24,6 +24,9 @@ export class IExam extends TimeStamps {
   @prop(id)
   _id?: String;
 
+  @prop()
+  id: number;
+
   @prop({ required: true })
   name: string;
 

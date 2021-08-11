@@ -1,4 +1,4 @@
-import { Exam, IExam, ILaboratory, Laboratory, Status } from "@models";
+import { Exam, ExamId, IExam, ILaboratory, Laboratory, Status } from "@models";
 
 import { Doc } from "@types";
 
@@ -9,18 +9,36 @@ function sanitizeObject<T>(obj: T, fields = ""): Omit<T, typeof fields> {
   return obj;
 }
 
+async function getNextId(): Promise<number> {
+  const { id } = await ExamId.findOneAndUpdate(
+    {},
+    {
+      $inc: {
+        id: 1,
+      },
+    },
+    { upsert: true, new: true },
+  ).lean();
+
+  return id;
+}
+
 export async function createOrActiveExam(
-  info: Omit<Doc<IExam>, "_id" | "status">,
+  info: Omit<Doc<IExam>, "_id" | "id" | "status">,
 ): Promise<Doc<IExam>> {
-  const examInfo = sanitizeObject<Omit<Doc<IExam>, "_id" | "status">>(
+  const examInfo = sanitizeObject<Omit<Doc<IExam>, "_id" | "id" | "status">>(
     info,
-    "_id status",
+    "_id status id",
   );
+
+  const id = await getNextId();
+
   const exam = await Exam.findOneAndUpdate(
     { name: new RegExp(`^${info.name}$`, "i") },
     {
       ...examInfo,
       status: Status.ACTIVE,
+      id,
     },
     { upsert: true, new: true },
   ).lean();
