@@ -169,6 +169,7 @@ export async function searchLaboratoriesByExamName(
         let: { examId: "$_id" },
         pipeline: [
           { $match: { $expr: { $in: ["$$examId", "$exams"] } } },
+          { $match: { $expr: { $eq: ["$status", Status.ACTIVE] } } },
           {
             $lookup: {
               from: Exam.collection.collectionName,
