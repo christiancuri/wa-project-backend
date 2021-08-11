@@ -1,0 +1,35 @@
+diff --git a/node_modules/mongoose-lean-getters/index.js b/node_modules/mongoose-lean-getters/index.js
+index f32d83a..2c44e58 100644
+--- a/node_modules/mongoose-lean-getters/index.js
++++ b/node_modules/mongoose-lean-getters/index.js
+@@ -1,5 +1,6 @@
+ 'use strict';
+ 
++const { Types } = require('mongoose');
+ const mpath = require('mpath');
+ 
+ module.exports = function mongooseLeanGetters(schema) {
+@@ -35,7 +36,7 @@ function applyGetters(schema, res) {
+     return;
+   }
+ 
+-  if (this._mongooseOptions.lean && this._mongooseOptions.lean.getters) {
++  if (this._mongooseOptions.lean) {
+     if (Array.isArray(res)) {
+       const len = res.length;
+       for (let i = 0; i < len; ++i) {
+@@ -73,6 +74,13 @@ function applyGettersToDoc(schema, doc) {
+   }
+ 
+   schema.eachPath((path, schematype) => {
++    const value = mpath.get(path, doc)
++    if (value instanceof Types.ObjectId) {
++      return mpath.set(path, String(value), doc)
++    }
++    if (value && value[0] && value[0] instanceof Types.ObjectId) {
++      return mpath.set(path, value.map(String), doc)
++    }
+     mpath.set(path, schematype.applyGetters(mpath.get(path, doc), doc, true), doc);
+   });
+ }
+\ No newline at end of file

@@ -1,0 +1,26 @@
+diff --git a/node_modules/tscpaths/cjs/index.js b/node_modules/tscpaths/cjs/index.js
+index 7ab3b6c..c9052fe 100755
+--- a/node_modules/tscpaths/cjs/index.js
++++ b/node_modules/tscpaths/cjs/index.js
+@@ -117,7 +117,7 @@ for (let i = 0; i < flen; i += 1) {
+     const newText = replaceAlias(text, file);
+     if (text !== newText) {
+         changedFileCount += 1;
+-        console.log(`${file}: replaced ${replaceCount - prevReplaceCount} paths`);
++        // console.log(`${file}: replaced ${replaceCount - prevReplaceCount} paths`);
+         fs_1.writeFileSync(file, newText, 'utf8');
+     }
+ }
+diff --git a/node_modules/tscpaths/lib/index.js b/node_modules/tscpaths/lib/index.js
+index 10b82db..9f05551 100644
+--- a/node_modules/tscpaths/lib/index.js
++++ b/node_modules/tscpaths/lib/index.js
+@@ -115,7 +115,7 @@ for (let i = 0; i < flen; i += 1) {
+     const newText = replaceAlias(text, file);
+     if (text !== newText) {
+         changedFileCount += 1;
+-        console.log(`${file}: replaced ${replaceCount - prevReplaceCount} paths`);
++        // console.log(`${file}: replaced ${replaceCount - prevReplaceCount} paths`);
+         writeFileSync(file, newText, 'utf8');
+     }
+ }

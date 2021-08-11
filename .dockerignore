@@ -1,0 +1,11 @@
+.git
+.github
+.vscode
+.gitignore
+README.md
+yarn-*.log
+Dockerfile
+docker-compose.yml
+node_modules
+dist
+tmp

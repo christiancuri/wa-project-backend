@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: backend-waproject
+  name: backend-waproject
+  namespace: default
+spec:
+  minReadySeconds: 5
+  progressDeadlineSeconds: 30
+  replicas: 1
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: backend-waproject
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: backend-waproject
+    spec:
+      containers:
+        - env:
+            - name: ENVIRONMENT
+              value: PRODUCTION
+            - name: PORT
+              value: "8080"
+          image: christiancury/backend-waproject:latest
+          name: backend-waproject
+          ports:
+            - containerPort: 8080
+              protocol: "TCP"
+          resources:
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+              ephemeral-storage: "5Gi"
+            requests:
+              cpu: "1"
+              memory: "500Mi"
+              ephemeral-storage: "1Gi"
+      terminationGracePeriodSeconds: 10
+      imagePullSecrets:
+        - name: dockerhub
