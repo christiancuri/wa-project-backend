@@ -16,7 +16,7 @@ app
   .use(helmet())
   .use(
     session({
-      name: "kicktap",
+      name: "waproject",
       secret: "alsjdnaksdjnk1j2nk3nwknaskjn1k23",
       resave: true,
       saveUninitialized: true,

@@ -1,11 +1,9 @@
 # Build Stage
 FROM node:14 as BUILD
 WORKDIR /app
-COPY ../ /app
+COPY . /app
 RUN yarn install
 RUN yarn run build
-RUN npm rebuild bcrypt --build-from-source
-
 
 # Production Stage
 FROM node:14-alpine
