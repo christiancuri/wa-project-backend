@@ -12,6 +12,7 @@ That's a simple project using NodeJS, Typescript, MongoDB (with Typegoose) and e
 - Github Actions as CI
 - Docker
 - EKS
+- Git hooks (Enforce eslint syntax and conventional commits)
 
 <br>
 ## Development
