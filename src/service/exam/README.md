@@ -7,6 +7,7 @@
  - [Deactivate exams](#Deactivate-Exams)
  - [Assign Exam to Laboratory](#Assign-Exam-to-Laboratory)
  - [Unassign Exam from Laboratory](#Unassign-Exam-from-Laboratory)
+ - [Find Laboratories by Exam Name](#Find-Laboratories-by-Exam-Name)
  - [Common Types](#Common-Types)
  - [Routes](routes.ts)
 
@@ -129,6 +130,34 @@ Response
   status: Status,
   exams: Exam[]
 }
+```
+
+### Find Laboratories by Exam Name
+```ts
+GET /api/exam/search?name={string}
+```
+```ts
+[
+  {
+    _id: ObjectId,
+    id: number,
+    name: string,
+    status: Status,
+    type: ExamType,
+    createdAt: Date,
+    updatedAt: Date,
+    laboratories: [
+      {
+        _id: ObjectId,
+        id: number,
+        name: string,
+        address: string,
+        status: Status,
+        exams: Exam[]
+      }
+    ]
+  }
+]
 ```
 
 <br>

@@ -7,6 +7,7 @@ import * as controller from "./controller";
 export const routes = express
   .Router()
   .get("/", passthroughErrors(controller.getExams))
+  .get("/search", passthroughErrors(controller.searchLaboratoriesByExamName))
   .post("/", passthroughErrors(controller.createExam))
   .put("/:id", passthroughErrors(controller.updateExam))
   .delete("/", passthroughErrors(controller.deactivateExams))

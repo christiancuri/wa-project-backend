@@ -1,4 +1,12 @@
-import { Exam, ExamId, IExam, ILaboratory, Laboratory, Status } from "@models";
+import {
+  Exam,
+  ExamId,
+  IExam,
+  ILaboratory,
+  Laboratory,
+  Status,
+  Populate,
+} from "@models";
 
 import { Doc } from "@types";
 
@@ -139,4 +147,39 @@ export async function unassignExamFromLaboratory(
       new: true,
     },
   ).lean();
+}
+
+type ExamWithLaboratoriesPopulated = Doc<IExam> & {
+  laboratories: Doc<Populate<ILaboratory, "exams">>;
+};
+
+export async function searchLaboratoriesByExamName(
+  name: string,
+): Promise<ExamWithLaboratoriesPopulated[]> {
+  const exams: unknown = await Exam.aggregate<ExamWithLaboratoriesPopulated>([
+    {
+      $match: {
+        name: new RegExp(name, "gi"),
+      },
+    },
+    {
+      $lookup: {
+        from: Laboratory.collection.collectionName,
+        let: { examId: "$_id" },
+        pipeline: [
+          { $match: { $expr: { $in: ["$$examId", "$exams"] } } },
+          {
+            $lookup: {
+              from: Exam.collection.collectionName,
+              localField: "exams",
+              foreignField: "_id",
+              as: "exams",
+            },
+          },
+        ],
+        as: "laboratories",
+      },
+    },
+  ]);
+  return exams as ExamWithLaboratoriesPopulated[];
 }

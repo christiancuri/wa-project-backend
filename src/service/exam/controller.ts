@@ -4,19 +4,21 @@ import { Validator } from "@utils";
 
 import * as service from "./service";
 
-export async function createExam(req: Req, res: Res): Promise<void> {
+type R = Promise<void>;
+
+export async function createExam(req: Req, res: Res): R {
   const { name, type } = Validator.validate(req.body, "name type");
 
   const exam = await service.createOrActiveExam({ name, type });
   res.json(exam);
 }
 
-export async function getExams(req: Req, res: Res): Promise<void> {
+export async function getExams(req: Req, res: Res): R {
   const exams = await service.getActiveExams();
   res.json(exams);
 }
 
-export async function deactivateExams(req: Req, res: Res): Promise<void> {
+export async function deactivateExams(req: Req, res: Res): R {
   const { ids } = Validator.validate(req.query, "ids");
 
   await service.disableExams(ids.split(","));
@@ -24,7 +26,7 @@ export async function deactivateExams(req: Req, res: Res): Promise<void> {
   res.sendStatus(204);
 }
 
-export async function updateExam(req: Req, res: Res): Promise<void> {
+export async function updateExam(req: Req, res: Res): R {
   const { id } = req.params;
 
   const { name, type } = Validator.validate(req.body, "name type");
@@ -35,7 +37,7 @@ export async function updateExam(req: Req, res: Res): Promise<void> {
   res.json(exam);
 }
 
-export async function assignExam(req: Req, res: Res): Promise<void> {
+export async function assignExam(req: Req, res: Res): R {
   const { id } = req.params;
 
   const { laboratory } = Validator.validate(req.body, "laboratory");
@@ -45,7 +47,7 @@ export async function assignExam(req: Req, res: Res): Promise<void> {
   res.json(response);
 }
 
-export async function unassignExam(req: Req, res: Res): Promise<void> {
+export async function unassignExam(req: Req, res: Res): R {
   const { id } = req.params;
 
   const { laboratory } = Validator.validate(req.body, "laboratory");
@@ -53,4 +55,10 @@ export async function unassignExam(req: Req, res: Res): Promise<void> {
   const response = await service.unassignExamFromLaboratory(id, laboratory);
 
   res.json(response);
+}
+
+export async function searchLaboratoriesByExamName(req: Req, res: Res): R {
+  const { name } = Validator.validate(req.query, "name");
+  const exams = await service.searchLaboratoriesByExamName(name);
+  res.json(exams);
 }
