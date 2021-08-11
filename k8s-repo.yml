@@ -2,8 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: backend-waproject
-  name: backend-waproject
+    app: wa-project-backend
+  name: wa-project-backend
   namespace: default
 spec:
   minReadySeconds: 5
@@ -12,7 +12,7 @@ spec:
   revisionHistoryLimit: 5
   selector:
     matchLabels:
-      app: backend-waproject
+      app: wa-project-backend
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -21,7 +21,7 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        app: backend-waproject
+        app: wa-project-backend
     spec:
       containers:
         - env:
@@ -29,8 +29,8 @@ spec:
               value: PRODUCTION
             - name: PORT
               value: "8080"
-          image: christiancury/backend-waproject:latest
-          name: backend-waproject
+          image: christiancury/wa-project-backend:latest
+          name: wa-project-backend
           ports:
             - containerPort: 8080
               protocol: "TCP"
