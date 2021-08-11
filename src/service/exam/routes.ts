@@ -10,5 +10,5 @@ export const routes = express
   .post("/", passthroughErrors(controller.createExam))
   .put("/:id", passthroughErrors(controller.updateExam))
   .delete("/", passthroughErrors(controller.deactivateExams))
-  .patch("/assign/:id", passthroughErrors(controller.assignExam))
-  .patch("/unassign/:id", passthroughErrors(controller.unassignExam));
+  .put("/assign/:id", passthroughErrors(controller.assignExam))
+  .put("/unassign/:id", passthroughErrors(controller.unassignExam));
