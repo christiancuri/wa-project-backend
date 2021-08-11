@@ -1,12 +1,12 @@
 # Laboratory API
 
 Content
- - [Get laboratories](#Get Laboratories)
- - [Create laboratory](#Create Laboratory)
- - [Update laboratory](#Update Laboratory)
- - [Deactivate laboratories](#Deactivate Laboratories)
- - [Common Types](#Common Types)
- - [Routes](routes.ts)
+- [Get laboratories](#Get-Laboratories)
+- [Create laboratory](#Create-Laboratory)
+- [Update laboratory](#Update-Laboratory)
+- [Deactivate laboratories](#Deactivate-Laboratories)
+- [Common Types](#Common-Types)
+- [Routes](routes.ts)
 
 ## Get started
 

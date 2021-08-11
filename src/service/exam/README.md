@@ -1,13 +1,13 @@
 # Exam API
 
 Content
- - [Get exams](#Get Exams)
- - [Create exam](#Create Exam)
- - [Update exam](#Update Exam)
- - [Deactivate exams](#Deactivate Exams)
- - [Assign Exam to Laboratory](#Assign Exam to Laboratory)
- - [Unassign Exam from Laboratory](#Unassign Exam from Laboratory)
- - [Common Types](#Common Types)
+ - [Get exams](#Get-Exams)
+ - [Create exam](#Create-Exam)
+ - [Update exam](#Update-Exam)
+ - [Deactivate exams](#Deactivate-Exams)
+ - [Assign Exam to Laboratory](#Assign-Exam-to-Laboratory)
+ - [Unassign Exam from Laboratory](#Unassign-Exam-from-Laboratory)
+ - [Common Types](#Common-Types)
  - [Routes](routes.ts)
 
 ## Get started
