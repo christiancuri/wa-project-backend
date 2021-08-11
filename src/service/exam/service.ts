@@ -160,6 +160,7 @@ export async function searchLaboratoriesByExamName(
     {
       $match: {
         name: new RegExp(name, "gi"),
+        status: Status.ACTIVE,
       },
     },
     {
@@ -180,6 +181,6 @@ export async function searchLaboratoriesByExamName(
         as: "laboratories",
       },
     },
-  ]);
+  ]).sort({ id: 1 });
   return exams as ExamWithLaboratoriesPopulated[];
 }
