@@ -2,7 +2,7 @@ import { Exam, ExamId, IExam, ILaboratory, Laboratory, Status } from "@models";
 
 import { Doc } from "@types";
 
-import { HTTP400Error } from "@utils";
+import { clone, HTTP400Error } from "@utils";
 
 function sanitizeObject<T>(obj: T, fields = ""): Omit<T, typeof fields> {
   for (const field of fields.split(" ")) delete obj[field];
@@ -49,10 +49,15 @@ export async function createOrActiveExam(
 export async function getActiveExams(): Promise<Doc<IExam>[]> {
   return Exam.find({
     status: Status.ACTIVE,
-  }).lean();
+  })
+    .sort({ id: 1 })
+    .lean();
 }
 
-type UpdateExamProp = Omit<Doc<IExam>, "_id" | "createdAt" | "updatedAt">;
+type UpdateExamProp = Omit<
+  Doc<IExam>,
+  "_id" | "id" | "createdAt" | "updatedAt"
+>;
 
 export async function updateExam(
   _id: string,
@@ -64,23 +69,22 @@ export async function updateExam(
 
   const exam = sanitizeObject<UpdateExamProp>(info, "_id createdAt updatedAt");
 
-  return Exam.findOneAndUpdate({ _id }, exam, { new: true }).lean();
+  return Exam.findOneAndUpdate({ _id }, clone(exam), { new: true }).lean();
 }
 
-export async function disableExam(_id: string): Promise<Doc<IExam>> {
-  const examExists = await Exam.exists({ _id });
-
-  if (!examExists) throw new HTTP400Error(`Exam ${_id} not exists`);
-
-  return Exam.findOneAndUpdate(
-    { _id },
+export async function disableExams(ids: string[]): Promise<void> {
+  await Exam.updateMany(
+    {
+      _id: {
+        $in: ids,
+      },
+    },
     {
       $set: {
         status: Status.INACTIVE,
       },
     },
-    { new: true },
-  ).lean();
+  );
 }
 
 async function validateLaboratoryAndExam(

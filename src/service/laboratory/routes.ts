@@ -9,4 +9,4 @@ export const routes = express
   .get("/", passthroughErrors(controller.getLaboratories))
   .post("/", passthroughErrors(controller.createLaboratory))
   .put("/:id", passthroughErrors(controller.updateLaboratory))
-  .delete("/:id", passthroughErrors(controller.deactivateLaboratory));
+  .delete("/", passthroughErrors(controller.deactivateLaboratories));

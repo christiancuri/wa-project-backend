@@ -7,7 +7,7 @@ import {
   Status,
 } from "@models";
 
-import { HTTP400Error } from "@utils";
+import { clone, HTTP400Error } from "@utils";
 
 function sanitizeObject<T>(obj: T, fields = ""): Omit<T, typeof fields> {
   for (const field of fields.split(" ")) delete obj[field];
@@ -35,6 +35,7 @@ export async function getLaboratories(): Promise<
     status: Status.ACTIVE,
   })
     .populateTs(["exams"])
+    .sort({ id: 1 })
     .lean();
 }
 
@@ -83,23 +84,22 @@ export async function updateLaboratory(
     "_id createdAt updatedAt",
   );
 
-  return Laboratory.findOneAndUpdate({ _id }, laboratory, { new: true }).lean();
+  return Laboratory.findOneAndUpdate({ _id }, clone(laboratory), {
+    new: true,
+  }).lean();
 }
 
-export async function disableLaboratory(
-  _id: string,
-): Promise<Doc<ILaboratory>> {
-  const labExists = await Laboratory.exists({ _id });
-
-  if (!labExists) throw new HTTP400Error(`Laboratory ${_id} not exists`);
-
-  return Laboratory.findOneAndUpdate(
-    { _id },
+export async function disableLaboratories(ids: string[]): Promise<void> {
+  await Laboratory.updateMany(
+    {
+      _id: {
+        $in: ids,
+      },
+    },
     {
       $set: {
         status: Status.INACTIVE,
       },
     },
-    { new: true },
-  ).lean();
+  );
 }

@@ -16,21 +16,19 @@ export async function getExams(req: Req, res: Res): Promise<void> {
   res.json(exams);
 }
 
-export async function deactivateExam(req: Req, res: Res): Promise<void> {
-  const { id } = req.params;
+export async function deactivateExams(req: Req, res: Res): Promise<void> {
+  const { ids } = Validator.validate(req.query, "ids");
 
-  const exam = await service.disableExam(id);
+  await service.disableExams(ids.split(","));
 
-  res.json(exam);
+  res.sendStatus(204);
 }
 
 export async function updateExam(req: Req, res: Res): Promise<void> {
   const { id } = req.params;
 
-  const { name, type, status } = Validator.validate(
-    req.body,
-    "name type status",
-  );
+  const { name, type } = Validator.validate(req.body, "name type");
+  const { status } = req.body;
 
   const exam = await service.updateExam(id, { name, type, status });
 

@@ -29,7 +29,7 @@ app
     return next();
   })
   .use(
-    morgan("format", {
+    morgan("combined", {
       stream: {
         write: (info: string) => logger.info(info.trim()),
       },

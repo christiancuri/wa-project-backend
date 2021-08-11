@@ -24,10 +24,12 @@ export async function createLaboratory(req: Req, res: Res): R {
 
 export async function updateLaboratory(req: Req, res: Res): R {
   const { id } = req.params;
-  const { name, address, exams, status } = Validator.validate(
+  const { name, address, exams } = Validator.validate(
     req.body,
-    "name address exams status",
+    "name address exams",
   );
+
+  const { status } = req.body;
 
   const lab = await service.updateLaboratory(id, {
     name,
@@ -39,10 +41,10 @@ export async function updateLaboratory(req: Req, res: Res): R {
   res.json(lab);
 }
 
-export async function deactivateLaboratory(req: Req, res: Res): R {
-  const { id } = req.params;
+export async function deactivateLaboratories(req: Req, res: Res): R {
+  const { ids } = Validator.validate(req.query, "ids");
 
-  const lab = await service.disableLaboratory(id);
+  await service.disableLaboratories(ids.split(","));
 
-  res.json(lab);
+  res.sendStatus(204);
 }
