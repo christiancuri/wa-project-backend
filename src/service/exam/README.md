@@ -1,6 +1,6 @@
 # Exam API
 
-Content
+## Content
  - [Get exams](#Get-Exams)
  - [Create exam](#Create-Exam)
  - [Update exam](#Update-Exam)
@@ -9,6 +9,10 @@ Content
  - [Unassign Exam from Laboratory](#Unassign-Exam-from-Laboratory)
  - [Common Types](#Common-Types)
  - [Routes](routes.ts)
+
+Other Contents
+- [Laboratory API Doc](../laboratory/README.md)
+- [Back to home](../../../README.md)
 
 ## Get started
 
@@ -142,3 +146,9 @@ export enum ExamType {
   CLINICAL_ANALYSIS = "clinical_analysis",
 }
 ```
+
+<hr>
+
+[Laboratory API Doc](../laboratory/README.md)
+
+[Back to home](../../../README.md)

@@ -1,6 +1,6 @@
 # Laboratory API
 
-Content
+## Content
 - [Get laboratories](#Get-Laboratories)
 - [Create laboratory](#Create-Laboratory)
 - [Update laboratory](#Update-Laboratory)
@@ -8,6 +8,9 @@ Content
 - [Common Types](#Common-Types)
 - [Routes](routes.ts)
 
+Other contents
+- [Exam API Doc](../exam/README.md)
+- [Back to home](../../../README.md)
 ## Get started
 
 ### Get Laboratories
@@ -102,3 +105,9 @@ export interface Exam {
   updatedAt: Date;
 }
 ```
+
+<hr>
+
+[Exam API Doc](../exam/README.md)
+
+[Back to home](../../../README.md)
